@@ -1,12 +1,6 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import type {PropsWithChildren} from 'react';
+
 import {
   SafeAreaView,
   ScrollView,
@@ -25,6 +19,9 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import * as io from "socket.io-client";
+
+const SOCKET_URL = 'wss://api.whitebit.com/ws';
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
@@ -58,6 +55,12 @@ function Section({children, title}: SectionProps): React.JSX.Element {
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
+  useEffect(()=>{
+    const socket = io.connect("wss://api.whitebit.com/ws", {
+      transports: ['websocket'], 
+    });
+  })
+  
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
